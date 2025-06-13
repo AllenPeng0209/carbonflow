@@ -7,6 +7,17 @@
 [![产品演示视频](https://img.youtube.com/vi/KJUgoyjiSbM/maxresdefault.jpg)](https://www.youtube.com/watch?v=KJUgoyjiSbM&ab_channel=%E5%BD%AD%E5%BD%A5%E7%B6%B8)
 
 
+## 🎥 关键Google 技术栈使用
+
+- 全系列Gemini , Gemma 模型调用
+- google rag 碳法规知识库使用
+
+  行业特点应用
+- gemini多模态能力碳排放证据收集 （用於用户材料验证）
+- ai碳因子匹配（主要用於智能选择合适的碳因子, 整合了ai判断能力, 大幅度对碳顾问提昇效率）
+
+
+
 ## 项目核心
 
 本平台围绕两个核心模块展开，协同实现"AI驱动的产品碳足迹全流程管理"：
