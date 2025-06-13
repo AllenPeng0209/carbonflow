@@ -1,10 +1,24 @@
-
 # For Google Expert
 
 ![Gemma调用模型完整流程图](./public/images/gemini.png)
 
+## 🎥 产品演示
 
-#低碳地球
+### 方式一：直接嵌入MP4视频（推荐）
+<!-- 将你的demo.mp4文件放到 public/videos/ 目录下 -->
+<video width="800" controls>
+  <source src="./public/videos/demo.mp4" type="video/mp4">
+  <source src="./public/videos/demo.webm" type="video/webm">
+  您的浏览器不支持视频标签。
+</video>
+
+### 方式二：YouTube/B站嵌入
+<!-- 替换为你的实际视频链接 -->
+[![产品演示视频](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+### 方式三：GIF动图演示
+<!-- 如果视频文件太大，也可以转换为GIF -->
+![功能演示](./public/images/demo.gif)
 
 ## 项目核心
 
@@ -13,7 +27,7 @@
 ### 1. Chat 碳顾问（AI Carbon Consultant）
 
 **简介：**  
-Chat 碳顾问是平台的智能中枢，基于先进的大语言模型（如 Gemini、Claude 等），为用户提供7x24小时的对话式碳管理服务。用户可以像与专业顾问交流一样，通过自然语言提出任何与碳足迹相关的问题或需求，系统会智能理解意图，自动调用知识库、工具和数据，给出专业、合规、可落地的建议。
+Chat 碳顾问是平台的智能中枢，基于先进的大语言模型（如 Gemini），为用户提供7x24小时的对话式碳管理服务。用户可以像与专业顾问交流一样，通过自然语言提出任何与碳足迹相关的问题或需求，系统会智能理解意图，自动调用知识库、工具和数据，给出专业、合规、可落地的建议。
 
 **主要功能：**
 - **智能问答**：支持碳核算、合规、减排、供应链管理等多领域问题的实时解答
@@ -58,8 +72,7 @@ CarbonFlow 是面向产品碳足迹（PCF）建模与生命周期分析（LCA）
 1. **克隆仓库**：
 
    ```bash
-   git clone -b stable https://github.com/stackblitz-labs/climateseals.diy.git
-   ```
+   git clone https://github.com/AllenPeng0209/carbonflow.git
    ```
 
 2. **安装依赖**：
