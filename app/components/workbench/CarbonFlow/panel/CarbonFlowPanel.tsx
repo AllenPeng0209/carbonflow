@@ -506,10 +506,6 @@ export const CarbonFlowPanel: React.FC<CarbonFlowPanelProps> = ({
         totalNodes={matchProgress.totalNodes}
         progressItems={matchProgress.progressItems}
         isCompleted={matchProgress.isCompleted}
-        onViewResults={() => {
-          carbonFactorMatch.setShowMatchResultsModal(true);
-          matchProgress.closeProgress();
-        }}
       />
     </div>
   );

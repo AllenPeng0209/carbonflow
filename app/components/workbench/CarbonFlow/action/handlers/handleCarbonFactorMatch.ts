@@ -259,14 +259,13 @@ export async function handleCarbonFactorMatch(
     }),
   );
 
-  let processedCount = 0;
-
-  for (const node of nodesToProcess) {
+  // 并发处理所有节点
+  const processNodeConcurrently = async (node: Node<NodeData>) => {
     const currentFactor = node.data.carbonFactor;
 
     if (currentFactor && parseFloat(currentFactor) !== 0) {
       matchResults.logs.push(`跳过节点 "${node.data.label || node.id}"，因为它已经有碳因子: ${currentFactor}`);
-      continue;
+      return null;
     }
 
     // 发送开始处理事件
@@ -298,7 +297,7 @@ export async function handleCarbonFactorMatch(
       const climatesealResult = await _fetchCarbonFactorFromClimatesealAPI(node);
 
       if (climatesealResult) {
-        nodesToUpdate.push({
+        const nodeUpdate = {
           node,
           factor: climatesealResult.factor,
           activityName: climatesealResult.activityName || 'Unknown Activity',
@@ -307,7 +306,7 @@ export async function handleCarbonFactorMatch(
           activityUUID: climatesealResult.activityUUID,
           dataSource: climatesealResult.dataSource,
           importDate: climatesealResult.importDate,
-        });
+        };
 
         matchResults.success.push(node.id);
         matchResults.logs.push(
@@ -331,6 +330,8 @@ export async function handleCarbonFactorMatch(
             },
           }),
         );
+
+        return nodeUpdate;
       } else {
         // 发送Climatiq API尝试事件
         window.dispatchEvent(
@@ -348,7 +349,7 @@ export async function handleCarbonFactorMatch(
         const climatiqResult = await _fetchCarbonFactorFromClimatiqAPI(node);
 
         if (climatiqResult) {
-          nodesToUpdate.push({
+          const nodeUpdate = {
             node,
             factor: climatiqResult.factor,
             activityName: climatiqResult.activityName || 'Unknown Activity',
@@ -357,7 +358,7 @@ export async function handleCarbonFactorMatch(
             activityUUID: climatiqResult.activityUUID,
             dataSource: climatiqResult.dataSource,
             importDate: climatiqResult.importDate,
-          });
+          };
 
           matchResults.success.push(node.id);
           matchResults.logs.push(
@@ -381,6 +382,8 @@ export async function handleCarbonFactorMatch(
               },
             }),
           );
+
+          return nodeUpdate;
         } else {
           matchResults.failed.push(node.id);
           matchResults.logs.push(`节点 "${node.data.label || node.id}" 无法从任何API匹配到碳因子`);
@@ -397,6 +400,8 @@ export async function handleCarbonFactorMatch(
               },
             }),
           );
+
+          return null;
         }
       }
     } catch (error: any) {
@@ -416,15 +421,20 @@ export async function handleCarbonFactorMatch(
           },
         }),
       );
-    }
 
-    processedCount++;
-
-    // 小延迟以确保UI更新
-    if (processedCount < nodesToProcess.length) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      return null;
     }
-  }
+  };
+
+  // 使用 Promise.all 并发处理所有节点
+  console.log(`开始并发处理 ${nodesToProcess.length} 个节点...`);
+  const nodeUpdatePromises = nodesToProcess.map(processNodeConcurrently);
+  const nodeUpdateResults = await Promise.all(nodeUpdatePromises);
+
+  // 过滤出成功的更新
+  const validNodeUpdates = nodeUpdateResults.filter((result) => result !== null) as NodeUpdateInfo[];
+
+  nodesToUpdate.push(...validNodeUpdates);
 
   if (nodesToUpdate.length > 0) {
     const allNodesFromState = store.getState().nodes;
@@ -457,24 +467,13 @@ export async function handleCarbonFactorMatch(
   console.log('Carbon factor match operation completed, updated:', nodesToUpdate.length > 0);
   console.log('Match results:', matchResults);
 
-  console.log('[handleCarbonFactorMatch] 准备派发carbonflow-match-results事件');
-  console.log('[handleCarbonFactorMatch] 事件详情:', matchResults);
-
+  // 派发匹配完成事件，通知进度弹窗完成
+  console.log('[handleCarbonFactorMatch] 准备派发carbonflow-match-complete事件');
   window.dispatchEvent(
-    new CustomEvent('carbonflow-match-results', {
+    new CustomEvent('carbonflow-match-complete', {
       detail: matchResults,
     }),
   );
 
-  console.log('[handleCarbonFactorMatch] carbonflow-match-results事件已派发');
-
-  // 也派发旧的事件以保持兼容性
-  window.dispatchEvent(
-    new CustomEvent('carbonFlowEvent', {
-      detail: {
-        type: 'factor_match_complete',
-        matchResults,
-      },
-    }),
-  );
+  console.log('[handleCarbonFactorMatch] carbonflow-match-complete事件已派发');
 }

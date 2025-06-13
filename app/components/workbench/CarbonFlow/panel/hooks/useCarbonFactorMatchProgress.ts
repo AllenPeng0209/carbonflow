@@ -139,10 +139,10 @@ export const useCarbonFactorMatchProgress = () => {
       }));
     };
 
-    window.addEventListener('carbonflow-match-results', handleMatchComplete);
+    window.addEventListener('carbonflow-match-complete', handleMatchComplete);
     
     return () => {
-      window.removeEventListener('carbonflow-match-results', handleMatchComplete);
+      window.removeEventListener('carbonflow-match-complete', handleMatchComplete);
     };
   }, []);
 

@@ -32,7 +32,6 @@ interface CarbonFactorMatchProgressModalProps {
   totalNodes: number;
   progressItems: MatchProgressItem[];
   isCompleted: boolean;
-  onViewResults?: () => void;
 }
 
 export const CarbonFactorMatchProgressModal: React.FC<CarbonFactorMatchProgressModalProps> = ({
@@ -42,7 +41,6 @@ export const CarbonFactorMatchProgressModal: React.FC<CarbonFactorMatchProgressM
   totalNodes,
   progressItems,
   isCompleted,
-  onViewResults,
 }) => {
   const [overallProgress, setOverallProgress] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
@@ -191,14 +189,9 @@ export const CarbonFactorMatchProgressModal: React.FC<CarbonFactorMatchProgressM
       onCancel={isCompleted ? onClose : onCancel}
       footer={
         isCompleted ? [
-          <Button key="close" onClick={onClose}>
-            关闭
+          <Button key="close" type="primary" onClick={onClose}>
+            完成
           </Button>,
-          onViewResults && (
-            <Button key="results" type="primary" onClick={onViewResults}>
-              查看详细结果
-            </Button>
-          ),
         ] : [
           <Button key="cancel" onClick={onCancel} danger>
             取消匹配
