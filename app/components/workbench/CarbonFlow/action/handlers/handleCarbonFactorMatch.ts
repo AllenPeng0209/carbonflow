@@ -236,65 +236,193 @@ export async function handleCarbonFactorMatch(
       }
     }
   } else {
-    nodesToProcess = store.getState().nodes;
+    // 过滤掉已有碳因子的节点
+    nodesToProcess = store.getState().nodes.filter((node) => {
+      const currentFactor = node.data.carbonFactor;
+      return !currentFactor || parseFloat(currentFactor) === 0;
+    });
   }
+
+  // 开始匹配进度事件
+  window.dispatchEvent(
+    new CustomEvent('carbonflow-match-start', {
+      detail: {
+        totalNodes: nodesToProcess.length,
+        nodes: nodesToProcess.map((node) => ({
+          nodeId: node.id,
+          nodeName: node.data.label || node.id,
+          status: 'pending',
+          progress: 0,
+          logs: [],
+        })),
+      },
+    }),
+  );
+
+  let processedCount = 0;
 
   for (const node of nodesToProcess) {
     const currentFactor = node.data.carbonFactor;
 
     if (currentFactor && parseFloat(currentFactor) !== 0) {
       matchResults.logs.push(`跳过节点 "${node.data.label || node.id}"，因为它已经有碳因子: ${currentFactor}`);
-    } else {
-      try {
-        // 先尝试 Climateseal API（新的默认接口）
-        const climatesealResult = await _fetchCarbonFactorFromClimatesealAPI(node);
+      continue;
+    }
 
-        if (climatesealResult) {
+    // 发送开始处理事件
+    window.dispatchEvent(
+      new CustomEvent('carbonflow-match-progress', {
+        detail: {
+          nodeId: node.id,
+          status: 'processing',
+          progress: 10,
+          logs: [`开始为节点 "${node.data.label || node.id}" 匹配碳因子...`],
+        },
+      }),
+    );
+
+    try {
+      // 发送Climateseal API尝试事件
+      window.dispatchEvent(
+        new CustomEvent('carbonflow-match-progress', {
+          detail: {
+            nodeId: node.id,
+            status: 'processing',
+            progress: 30,
+            logs: [`正在通过Climateseal API匹配...`],
+          },
+        }),
+      );
+
+      // 先尝试 Climateseal API（新的默认接口）
+      const climatesealResult = await _fetchCarbonFactorFromClimatesealAPI(node);
+
+      if (climatesealResult) {
+        nodesToUpdate.push({
+          node,
+          factor: climatesealResult.factor,
+          activityName: climatesealResult.activityName || 'Unknown Activity',
+          unit: climatesealResult.unit || 'unit',
+          geography: climatesealResult.geography,
+          activityUUID: climatesealResult.activityUUID,
+          dataSource: climatesealResult.dataSource,
+          importDate: climatesealResult.importDate,
+        });
+
+        matchResults.success.push(node.id);
+        matchResults.logs.push(
+          `节点 "${node.data.label || node.id}" 通过Climateseal API匹配成功，碳因子: ${climatesealResult.factor}`,
+        );
+
+        // 发送成功事件
+        window.dispatchEvent(
+          new CustomEvent('carbonflow-match-progress', {
+            detail: {
+              nodeId: node.id,
+              status: 'success',
+              progress: 100,
+              result: {
+                factor: climatesealResult.factor,
+                activityName: climatesealResult.activityName || 'Unknown Activity',
+                unit: climatesealResult.unit || 'unit',
+                dataSource: climatesealResult.dataSource || 'Climateseal API',
+              },
+              logs: [`通过Climateseal API匹配成功`],
+            },
+          }),
+        );
+      } else {
+        // 发送Climatiq API尝试事件
+        window.dispatchEvent(
+          new CustomEvent('carbonflow-match-progress', {
+            detail: {
+              nodeId: node.id,
+              status: 'processing',
+              progress: 70,
+              logs: [`Climateseal API无结果，尝试Climatiq API...`],
+            },
+          }),
+        );
+
+        // Climateseal API 失败后，尝试 Climatiq API 作为备选
+        const climatiqResult = await _fetchCarbonFactorFromClimatiqAPI(node);
+
+        if (climatiqResult) {
           nodesToUpdate.push({
             node,
-            factor: climatesealResult.factor,
-            activityName: climatesealResult.activityName || 'Unknown Activity',
-            unit: climatesealResult.unit || 'unit',
-            geography: climatesealResult.geography,
-            activityUUID: climatesealResult.activityUUID,
-            dataSource: climatesealResult.dataSource,
-            importDate: climatesealResult.importDate,
+            factor: climatiqResult.factor,
+            activityName: climatiqResult.activityName || 'Unknown Activity',
+            unit: climatiqResult.unit || 'unit',
+            geography: climatiqResult.geography,
+            activityUUID: climatiqResult.activityUUID,
+            dataSource: climatiqResult.dataSource,
+            importDate: climatiqResult.importDate,
           });
 
           matchResults.success.push(node.id);
           matchResults.logs.push(
-            `节点 "${node.data.label || node.id}" 通过Climateseal API匹配成功，碳因子: ${climatesealResult.factor}`,
+            `节点 "${node.data.label || node.id}" 通过Climatiq API匹配成功，碳因子: ${climatiqResult.factor}`,
+          );
+
+          // 发送成功事件
+          window.dispatchEvent(
+            new CustomEvent('carbonflow-match-progress', {
+              detail: {
+                nodeId: node.id,
+                status: 'success',
+                progress: 100,
+                result: {
+                  factor: climatiqResult.factor,
+                  activityName: climatiqResult.activityName || 'Unknown Activity',
+                  unit: climatiqResult.unit || 'unit',
+                  dataSource: climatiqResult.dataSource || 'Climatiq API',
+                },
+                logs: [`通过Climatiq API匹配成功`],
+              },
+            }),
           );
         } else {
-          // Climateseal API 失败后，尝试 Climatiq API 作为备选
-          const climatiqResult = await _fetchCarbonFactorFromClimatiqAPI(node);
+          matchResults.failed.push(node.id);
+          matchResults.logs.push(`节点 "${node.data.label || node.id}" 无法从任何API匹配到碳因子`);
 
-          if (climatiqResult) {
-            nodesToUpdate.push({
-              node,
-              factor: climatiqResult.factor,
-              activityName: climatiqResult.activityName || 'Unknown Activity',
-              unit: climatiqResult.unit || 'unit',
-              geography: climatiqResult.geography,
-              activityUUID: climatiqResult.activityUUID,
-              dataSource: climatiqResult.dataSource,
-              importDate: climatiqResult.importDate,
-            });
-
-            matchResults.success.push(node.id);
-            matchResults.logs.push(
-              `节点 "${node.data.label || node.id}" 通过Climatiq API匹配成功，碳因子: ${climatiqResult.factor}`,
-            );
-          } else {
-            matchResults.failed.push(node.id);
-            matchResults.logs.push(`节点 "${node.data.label || node.id}" 无法从任何API匹配到碳因子`);
-          }
+          // 发送失败事件
+          window.dispatchEvent(
+            new CustomEvent('carbonflow-match-progress', {
+              detail: {
+                nodeId: node.id,
+                status: 'failed',
+                progress: 100,
+                error: '无法从任何API匹配到碳因子',
+                logs: [`所有API都无法匹配到碳因子`],
+              },
+            }),
+          );
         }
-      } catch (error: any) {
-        matchResults.failed.push(node.id);
-        matchResults.logs.push(`处理节点 "${node.data.label || node.id}" 时发生错误: ${error.message}`);
-        console.error(`处理节点 "${node.data.label || node.id}" 时发生错误:`, error);
       }
+    } catch (error: any) {
+      matchResults.failed.push(node.id);
+      matchResults.logs.push(`处理节点 "${node.data.label || node.id}" 时发生错误: ${error.message}`);
+      console.error(`处理节点 "${node.data.label || node.id}" 时发生错误:`, error);
+
+      // 发送错误事件
+      window.dispatchEvent(
+        new CustomEvent('carbonflow-match-progress', {
+          detail: {
+            nodeId: node.id,
+            status: 'failed',
+            progress: 100,
+            error: error.message,
+            logs: [`匹配过程中发生错误: ${error.message}`],
+          },
+        }),
+      );
+    }
+
+    processedCount++;
+
+    // 小延迟以确保UI更新
+    if (processedCount < nodesToProcess.length) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 

@@ -23,6 +23,7 @@ import {
   SupplierDataModal,
   CompliancePanel,
 } from './components';
+import { CarbonFactorMatchProgressModal } from './components/CarbonFactorMatchProgressModal';
 
 // 导入hooks
 import {
@@ -32,6 +33,7 @@ import {
   useModalManagement,
   useCarbonFlowData,
 } from './hooks';
+import { useCarbonFactorMatchProgress } from './hooks/useCarbonFactorMatchProgress';
 
 // 导入服务和工具
 import { getChineseFileStatusMessage, getLocalStorage } from '~/utils/carbonFlowUtils';
@@ -87,6 +89,7 @@ export const CarbonFlowPanel: React.FC<CarbonFlowPanelProps> = ({
   const carbonFactorMatch = useCarbonFactorMatch();
   const modalManagement = useModalManagement();
   const carbonFlowData = useCarbonFlowData(workflowId);
+  const matchProgress = useCarbonFactorMatchProgress();
 
   // 处理函数
   const handleStageSelect = (stage: string) => {
@@ -493,6 +496,20 @@ export const CarbonFlowPanel: React.FC<CarbonFlowPanelProps> = ({
         onClose={handleCloseSupplierData}
         emissionSourceId={selectedEmissionSourceId}
         emissionSourceName={selectedEmissionSourceName}
+      />
+
+      {/* Carbon Factor Match Progress Modal */}
+      <CarbonFactorMatchProgressModal
+        visible={matchProgress.visible}
+        onClose={matchProgress.closeProgress}
+        onCancel={matchProgress.cancelMatch}
+        totalNodes={matchProgress.totalNodes}
+        progressItems={matchProgress.progressItems}
+        isCompleted={matchProgress.isCompleted}
+        onViewResults={() => {
+          carbonFactorMatch.setShowMatchResultsModal(true);
+          matchProgress.closeProgress();
+        }}
       />
     </div>
   );

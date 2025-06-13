@@ -4,21 +4,8 @@
 
 ## 🎥 产品演示
 
-### 方式一：直接嵌入MP4视频（推荐）
-<!-- 将你的demo.mp4文件放到 public/videos/ 目录下 -->
-<video width="800" controls>
-  <source src="./public/videos/demo.mp4" type="video/mp4">
-  <source src="./public/videos/demo.webm" type="video/webm">
-  您的浏览器不支持视频标签。
-</video>
+[![产品演示视频](https://img.youtube.com/vi/KJUgoyjiSbM/maxresdefault.jpg)](https://www.youtube.com/watch?v=KJUgoyjiSbM&ab_channel=%E5%BD%AD%E5%BD%A5%E7%B6%B8)
 
-### 方式二：YouTube/B站嵌入
-<!-- 替换为你的实际视频链接 -->
-[![产品演示视频](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
-
-### 方式三：GIF动图演示
-<!-- 如果视频文件太大，也可以转换为GIF -->
-![功能演示](./public/images/demo.gif)
 
 ## 项目核心
 

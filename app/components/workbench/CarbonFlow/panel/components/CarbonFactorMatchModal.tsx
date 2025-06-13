@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Button, Table, Input, Select, Space, Tabs } from 'antd';
 import type { ColumnType } from 'antd/es/table';
+import { CarbonFactorMatchProgressModal } from './CarbonFactorMatchProgressModal';
+import { useCarbonFactorMatchProgress } from '~/components/workbench/CarbonFlow/panel/hooks/useCarbonFactorMatchProgress';
 
 const lifecycleStages = ['全部', '原材料获取阶段', '生产制造阶段', '分销运输阶段', '使用阶段', '寿命终止阶段'];
 
@@ -48,6 +50,8 @@ export const CarbonFactorMatchModal: React.FC<CarbonFactorMatchModalProps> = ({
   onCloseMatchResults,
   nodes,
 }) => {
+  // 进度弹窗状态管理
+  const matchProgress = useCarbonFactorMatchProgress();
   // 因子匹配表格列定义
   const factorMatchTableColumns: ColumnType<any>[] = [
     {
@@ -55,7 +59,7 @@ export const CarbonFactorMatchModal: React.FC<CarbonFactorMatchModalProps> = ({
       dataIndex: 'index',
       key: 'index',
       width: 60,
-      render: (_, __, index) => index + 1,
+              render: (_, _record, index) => index + 1,
     },
     {
       title: '生命周期阶段',
