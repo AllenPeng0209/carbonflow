@@ -11,6 +11,7 @@
 
 - 全系列Gemini , Gemma 模型调用
 - google rag 碳法规知识库使用
+- 支持Gamma本地ollma部属调用, 请看README_ModelSelector.md
 - gemini多模态能力碳排放证据收集 （用於用户材料验证）
 - ai碳因子匹配（主要用於智能选择合适的碳因子, 整合了ai判断能力, 大幅度对碳顾问提昇效率）
 
