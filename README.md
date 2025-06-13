@@ -2,7 +2,7 @@
 
 ![Gemma调用模型完整流程图](./public/images/gemini.png)
 
-## 🎥 产品演示
+## 🎥 产品演示 (请点击观看youtube视频）
 
 [![产品演示视频](https://img.youtube.com/vi/KJUgoyjiSbM/maxresdefault.jpg)](https://www.youtube.com/watch?v=KJUgoyjiSbM&ab_channel=%E5%BD%AD%E5%BD%A5%E7%B6%B8)
 
