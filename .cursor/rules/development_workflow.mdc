@@ -1,0 +1,69 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Workflow & Git Protocol
+
+本文件定义了 ClimateSeal 项目的标准化开发工作流程与Git使用规范。所有团队成员和AI助手都必须严格遵守此流程，以保证代码质量、协作效率和主分支的稳定性。
+
+---
+
+### **1. Git 分支模型 (Git Flow)**
+
+我们采用一种简化的 `Git Flow` 模型：
+
+-   **`main`**: **生产分支**。永远处于可发布状态。只接受来自 `develop` 分支的合并（通过Release流程）或紧急的 `hotfix`。严禁直接向 `main` 推送代码。
+-   **`develop`**: **开发主分支**。这是所有功能开发的"集成分支"。当一个功能开发完成，它应该被合并到 `develop`。此分支应始终保持构建通过。
+-   **`feature/<feature-name>`**: **功能分支**。
+    -   命名: `feature/user-authentication`, `feature/carbon-report-pdf-export`
+    -   创建来源: 必须从 `develop` 分支创建。
+    -   合并目标: 开发完成后，通过 Pull Request 合并回 `develop`。
+-   **`bugfix/<bug-name>`**: **Bug修复分支**。
+    -   命名: `bugfix/login-button-not-working`
+    -   创建来源: 从 `develop` 分支创建。
+    -   合并目标: 修复完成后，通过 Pull Request 合并回 `develop`。
+-   **`hotfix/<fix-name>`**: **紧急生产修复分支**。
+    -   命名: `hotfix/critical-security-patch`
+    -   创建来源: 必须从 `main` 分支创建。
+    -   合并目标: 修复完成后，必须同时合并回 `main` 和 `develop`。
+
+---
+
+### **2. Pull Request (PR) 规范**
+
+所有向 `develop` 和 `main` 分支的合并都**必须**通过 Pull Request (PR)。
+
+-   **PR 标题**: 必须清晰地描述变更内容。格式为 `<类型>: <主题>`。
+    -   类型: `feat` (新功能), `fix` (Bug修复), `docs` (文档), `style` (格式), `refactor` (重构), `test` (测试), `chore` (构建或工具变动)。
+    -   示例: `feat: Add Google OAuth2 login`, `fix: Correct LCA calculation for scope 2 emissions`
+-   **PR 描述**: 必须包含以下内容：
+    1.  **本次变更解决了什么问题？ (Why)**
+    2.  **具体变更内容是什么？ (What)**
+    3.  **我是如何测试的？ (How)**
+    4.  **是否有任何潜在风险或需要注意的地方？**
+
+---
+
+### **3. Code Review 指南**
+
+-   PR 至少需要 **1位** 其他成员的 `Approve` 才能合并。
+-   Reviewer 应重点关注：
+    -   **逻辑正确性**: 功能是否按预期工作？
+    -   **架构符合度**: 是否遵循了 `software_architect_persona.mdc` 中定义的架构原则和目录结构？
+    -   **可读性与维护性**: 代码是否清晰易懂？
+    -   **测试覆盖**: 是否有足够的测试来保证变更的质量？（参考 `testing_strategy.mdc`）
+    -   **安全性**: 是否引入了新的安全风险？
+
+---
+
+### **4. 持续集成 (CI)**
+
+每次向 `feature/*` 或 `bugfix/*` 分支推送代码，以及创建PR时，CI系统将自动执行以下检查：
+
+1.  **Linting & Formatting**: 检查代码风格是否统一。
+2.  **Unit & Integration Tests**: 运行所有测试用例。
+3.  **Build**: 确认项目可以成功构建。
+
+**只有当所有CI检查通过时，PR才被允许合并。**
+

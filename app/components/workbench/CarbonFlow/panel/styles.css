@@ -1,0 +1,479 @@
+/**
+ * 面板容器样式
+ */
+.carbon-panel-container {
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+  background-color: #000;
+}
+
+/**
+ * 面板卡片样式
+ */
+.panel-card {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * 场景信息卡片样式
+ */
+.scenario-info-card {
+  background-color: #000;
+}
+
+/**
+ * 表格容器样式
+ */
+.table-container {
+  margin-top: 16px;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/**
+ * 按钮组样式
+ */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+/**
+ * 搜索输入框样式
+ */
+.search-input {
+  width: 200px;
+  margin-bottom: 8px;
+}
+
+/**
+ * 表单项样式
+ */
+.form-item {
+  margin-bottom: 16px;
+}
+
+/**
+ * 模态框样式
+ */
+.ant-modal-content {
+  border-radius: 8px;
+}
+
+/* 多级供应商表格样式优化 */
+.emission-source-table {
+  background: #1a1a1a !important;
+}
+
+.emission-source-table .ant-table {
+  background: #1a1a1a !important;
+}
+
+.emission-source-table .ant-table-thead > tr > th {
+  background: #262626 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #434343 !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.emission-source-table .ant-table-tbody > tr > td {
+  background: #1a1a1a !important;
+  border-bottom: 1px solid #303030 !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  height: 40px !important;
+  vertical-align: middle !important;
+}
+
+.emission-source-table .ant-table-tbody > tr {
+  transition: all 0.2s ease !important;
+}
+
+.emission-source-table .ant-table-tbody > tr:hover > td {
+  background: #262626 !important;
+}
+
+/* 层级缩进容器样式 */
+.hierarchy-cell-container {
+  display: flex;
+  align-items: center;
+  min-height: 32px !important;
+  padding: 4px 0 !important;
+  position: relative;
+}
+
+/* 层级缩进指示线 */
+.hierarchy-cell-container::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  width: calc(100% - 60px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* 第一级缩进指示 */
+.hierarchy-level-1 .hierarchy-cell-container::before {
+  left: 40px;
+  background: rgba(24, 144, 255, 0.2);
+}
+
+/* 第二级缩进指示 */
+.hierarchy-level-2 .hierarchy-cell-container::before {
+  left: 80px;
+  background: rgba(82, 196, 26, 0.2);
+}
+
+/* 第三级缩进指示 */
+.hierarchy-level-3 .hierarchy-cell-container::before {
+  left: 120px;
+  background: rgba(250, 173, 20, 0.2);
+}
+
+/* 层级样式优化 - 使用更深的背景色和统一行高 */
+.emission-source-table .hierarchy-level-1 > td {
+  background: #2a2a2a !important;
+  border-left: 4px solid #1890ff !important;
+  padding: 8px 12px !important;
+  height: 40px !important;
+  position: relative;
+}
+
+.emission-source-table .hierarchy-level-1:hover > td {
+  background: #333333 !important;
+}
+
+.emission-source-table .hierarchy-level-2 > td {
+  background: #333333 !important;
+  border-left: 4px solid #52c41a !important;
+  padding: 8px 12px !important;
+  height: 40px !important;
+  position: relative;
+}
+
+.emission-source-table .hierarchy-level-2:hover > td {
+  background: #3a3a3a !important;
+}
+
+.emission-source-table .hierarchy-level-3 > td {
+  background: #3a3a3a !important;
+  border-left: 4px solid #faad14 !important;
+  padding: 8px 12px !important;
+  height: 40px !important;
+  position: relative;
+}
+
+.emission-source-table .hierarchy-level-3:hover > td {
+  background: #404040 !important;
+}
+
+/* 供应商层级边框样式 - 增加边框宽度 */
+.emission-source-table .supplier-tier-1 > td {
+  border-left: 4px solid #52c41a !important;
+}
+
+.emission-source-table .supplier-tier-2 > td {
+  border-left: 4px solid #faad14 !important;
+}
+
+.emission-source-table .supplier-tier-3 > td {
+  border-left: 4px solid #ff7875 !important;
+}
+
+/* 复合产品样式 */
+.emission-source-table .composite-product > td {
+  border-left: 5px solid #1890ff !important;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(24, 144, 255, 0.2) !important;
+}
+
+.emission-source-table .composite-product > td:first-child::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(45deg, #1890ff, #40a9ff);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* 展开按钮样式优化 */
+.hierarchy-expand-btn {
+  transition: all 0.2s ease !important;
+  color: #8c8c8c !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  width: 16px !important;
+  height: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.hierarchy-expand-btn:hover {
+  color: #1890ff !important;
+  transform: scale(1.1) !important;
+  background: rgba(24, 144, 255, 0.1) !important;
+  border-radius: 2px !important;
+}
+
+.hierarchy-expand-btn .anticon {
+  font-size: 10px !important;
+}
+
+/* 供应商标签样式优化 */
+.supplier-tier-tag {
+  font-size: 10px !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  margin-right: 4px !important;
+}
+
+/* 组成比例标签样式优化 */
+.composition-ratio-tag {
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  padding: 1px 4px !important;
+  border-radius: 2px !important;
+  margin-left: 4px !important;
+}
+
+/* 图标样式优化 */
+.hierarchy-icon {
+  font-size: 12px !important;
+  margin-right: 4px !important;
+}
+
+.hierarchy-icon.composite-icon {
+  color: #1890ff !important;
+}
+
+.hierarchy-icon.supplier-icon {
+  color: #52c41a !important;
+}
+
+/* 操作按钮样式优化 */
+.emission-source-table .ant-btn-link {
+  padding: 2px 4px !important;
+  height: auto !important;
+  font-size: 12px !important;
+}
+
+.emission-source-table .ant-btn-link .anticon {
+  font-size: 12px !important;
+}
+
+/* 状态文本样式 */
+.status-complete {
+  color: #52c41a !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+}
+
+.status-missing {
+  color: #ff4d4f !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+}
+
+.status-pending {
+  color: #faad14 !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+}
+
+/* 供应商信息样式 */
+.supplier-info-container {
+  line-height: 1.3 !important;
+}
+
+.supplier-info-name {
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  margin-bottom: 2px !important;
+}
+
+.supplier-info-details {
+  font-size: 10px !important;
+  color: #8c8c8c !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* 表格滚动容器样式 */
+.emission-source-table-scroll-container {
+  background: #1a1a1a !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 表格容器样式 */
+.emission-source-table .ant-table-container {
+  flex: 1 !important;
+  overflow: auto !important;
+}
+
+/* 表格分页样式 */
+.emission-source-table .ant-pagination {
+  background: #1a1a1a !important;
+  padding: 8px 16px !important;
+  border-top: 1px solid #303030 !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.emission-source-table .ant-pagination .ant-pagination-item {
+  background: #262626 !important;
+  border-color: #434343 !important;
+}
+
+.emission-source-table .ant-pagination .ant-pagination-item a {
+  color: #ffffff !important;
+}
+
+.emission-source-table .ant-pagination .ant-pagination-item-active {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+.emission-source-table .ant-pagination .ant-pagination-item-active a {
+  color: #ffffff !important;
+}
+
+/* 卡片样式优化 */
+.emission-source-table.ant-card {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* 卡片标题样式 */
+.emission-source-table .ant-card-head {
+  background: #262626 !important;
+  border-bottom: 1px solid #434343 !important;
+  padding: 8px 16px !important;
+  min-height: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.emission-source-table .ant-card-head-title {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 4px 0 !important;
+}
+
+.emission-source-table .ant-card-extra {
+  color: #8c8c8c !important;
+  font-size: 12px !important;
+}
+
+.emission-source-table .ant-card-body {
+  padding: 0 !important;
+  background: #1a1a1a !important;
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 表格本体样式 */
+.emission-source-table .ant-table {
+  background: #1a1a1a !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.emission-source-table .ant-table-wrapper {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 0 !important;
+}
+
+.emission-source-table .ant-table-content {
+  flex: 1 !important;
+  overflow: auto !important;
+}
+
+/* 确保表格底部没有多余的边距和圆角 */
+.emission-source-table .ant-table-tbody {
+  background: #1a1a1a !important;
+}
+
+.emission-source-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+/* 分页容器完全贴合 */
+.emission-source-table .ant-pagination-wrapper {
+  background: #1a1a1a !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 移除任何可能的底部间距 */
+.emission-source-table .ant-table-container {
+  border-radius: 0 !important;
+}
+
+.emission-source-table .ant-table-body {
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* 确保卡片底部完全贴合 */
+.emission-source-table.ant-card .ant-card-body {
+  border-radius: 0 0 8px 8px !important;
+}
+
+.emission-source-table-scroll-container {
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* 紧凑模式 - 统一行高 */
+.emission-source-table.compact-mode .ant-table-tbody > tr > td {
+  padding: 8px 12px !important;
+  font-size: 11px !important;
+  height: 40px !important;
+  vertical-align: middle !important;
+}
+
+.emission-source-table.compact-mode .ant-table-thead > tr > th {
+  padding: 8px 12px !important;
+  font-size: 11px !important;
+  height: 36px !important;
+}
+
+.emission-source-table.compact-mode .hierarchy-cell-container {
+  min-height: 32px !important;
+} 

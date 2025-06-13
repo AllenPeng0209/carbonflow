@@ -1,0 +1,63 @@
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+esg_ai
+
+node_modules
+dist
+dist-ssr
+*.local
+
+.vscode/*
+.vscode/launch.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+/.history
+/.cache
+/build
+functions/build/
+.env.local
+.env
+.dev.vars
+*.vars
+.wrangler
+_worker.bundle
+
+Modelfile
+modelfiles
+
+# docs ignore
+site
+*.xlsx
+# commit file ignore
+app/commit.json
+changelogUI.md
+docs/instructions/Roadmap.md
+
+# *.md  # 注释掉这一行，允许跟踪markdown文件
+# 或者替换为更具体的规则
+# 例如：忽略根目录的md文件，但不忽略docs目录的
+/*.md
+!README.md
+!CONTRIBUTING.md
+!LICENSE.md
+!FAQ.md
+!changelog.md
+!PROJECT.md
+.qodo
+.vercel
+*.pem
+
+third_party/*

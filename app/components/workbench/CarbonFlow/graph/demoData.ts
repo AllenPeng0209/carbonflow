@@ -1,0 +1,298 @@
+import type { Node, Edge } from 'reactflow';
+import type { NodeData } from '~/types/nodes';
+
+/**
+ * 桑基图演示数据 - 智能手机完整生命周期碳足迹
+ */
+export const sankeyDemoNodes: Node<NodeData>[] = [
+  // 最终产品层 (Layer 5)
+  {
+    id: 'final-product',
+    type: 'finalProduct',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'final-product',
+      workflowId: 'demo-workflow',
+      label: '智能手机',
+      nodeId: 'smartphone_final',
+      lifecycleStage: 'finalProduct',
+      emissionType: 'total',
+      activityScore: 0,
+      carbonFactor: '0',
+      activitydataSource: 'calculated',
+      carbonFootprint: '85.5',
+      verificationStatus: 'verified',
+      nodeType: 'finalProduct',
+      quantity: '1',
+      activityUnit: '台',
+    } as NodeData,
+  },
+
+  // 产品层 (Layer 4)
+  {
+    id: 'smartphone-assembly',
+    type: 'product',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'smartphone-assembly',
+      workflowId: 'demo-workflow',
+      nodeId: 'smartphone-assembly',
+      label: '手机组装',
+      lifecycleStage: 'product',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '12.5',
+      activitydataSource: 'measured',
+      carbonFootprint: '12.5',
+      verificationStatus: 'verified',
+      nodeType: 'product',
+      quantity: '1',
+      activityUnit: '台',
+    } as NodeData,
+  },
+
+  // 制造层 (Layer 3)
+  {
+    id: 'chip-manufacturing',
+    type: 'manufacturing',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'chip-manufacturing',
+      workflowId: 'demo-workflow',
+      nodeId: 'chip-manufacturing',
+      label: '芯片制造',
+      lifecycleStage: 'manufacturing',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '45.2',
+      activitydataSource: 'measured',
+      carbonFootprint: '45.2',
+      verificationStatus: 'verified',
+      nodeType: 'manufacturing',
+      quantity: '1',
+      activityUnit: '片',
+    } as NodeData,
+  },
+  {
+    id: 'screen-manufacturing',
+    type: 'manufacturing',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'screen-manufacturing',
+      workflowId: 'demo-workflow',
+      nodeId: 'screen-manufacturing',
+      label: '屏幕制造',
+      lifecycleStage: 'manufacturing',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '18.7',
+      activitydataSource: 'measured',
+      carbonFootprint: '18.7',
+      verificationStatus: 'verified',
+      nodeType: 'manufacturing',
+      quantity: '1',
+      activityUnit: '块',
+    } as NodeData,
+  },
+  {
+    id: 'battery-manufacturing',
+    type: 'manufacturing',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'battery-manufacturing',
+      workflowId: 'demo-workflow',
+      nodeId: 'battery-manufacturing',
+      label: '电池制造',
+      lifecycleStage: 'manufacturing',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '15.3',
+      activitydataSource: 'measured',
+      carbonFootprint: '15.3',
+      verificationStatus: 'verified',
+      nodeType: 'manufacturing',
+      quantity: '1',
+      activityUnit: '块',
+    } as NodeData,
+  },
+
+  // 分销层 (Layer 2)
+  {
+    id: 'packaging',
+    type: 'distribution',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'packaging',
+      workflowId: 'demo-workflow',
+      nodeId: 'packaging',
+      label: '包装',
+      lifecycleStage: 'distribution',
+      emissionType: 'indirect',
+      activityScore: 0,
+      carbonFactor: '2.1',
+      activitydataSource: 'estimated',
+      carbonFootprint: '2.1',
+      verificationStatus: 'pending',
+      nodeType: 'distribution',
+      quantity: '1',
+      activityUnit: '套',
+    } as NodeData,
+  },
+  {
+    id: 'transportation',
+    type: 'distribution',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'transportation',
+      workflowId: 'demo-workflow',
+      nodeId: 'transportation',
+      label: '运输',
+      lifecycleStage: 'distribution',
+      emissionType: 'indirect',
+      activityScore: 0,
+      carbonFactor: '3.8',
+      activitydataSource: 'estimated',
+      carbonFootprint: '3.8',
+      verificationStatus: 'pending',
+      nodeType: 'distribution',
+      quantity: '1000',
+      activityUnit: 'km',
+    } as NodeData,
+  },
+
+  // 使用层 (Layer 1)
+  {
+    id: 'electricity-usage',
+    type: 'usage',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'electricity-usage',
+      workflowId: 'demo-workflow',
+      nodeId: 'electricity-usage',
+      label: '用电',
+      lifecycleStage: 'usage',
+      emissionType: 'indirect',
+      activityScore: 0,
+      carbonFactor: '25.6',
+      activitydataSource: 'estimated',
+      carbonFootprint: '25.6',
+      verificationStatus: 'pending',
+      nodeType: 'usage',
+      quantity: '2',
+      activityUnit: '年',
+    } as NodeData,
+  },
+
+  // 废弃层 (Layer 0) - 排放源
+  {
+    id: 'silicon-mining',
+    type: 'disposal',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'silicon-mining',
+      workflowId: 'demo-workflow',
+      nodeId: 'silicon-mining',
+      label: '硅矿开采',
+      lifecycleStage: 'disposal',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '28.4',
+      activitydataSource: 'measured',
+      carbonFootprint: '28.4',
+      verificationStatus: 'verified',
+      nodeType: 'disposal',
+      quantity: '50',
+      activityUnit: 'g',
+    } as NodeData,
+  },
+  {
+    id: 'rare-earth-mining',
+    type: 'disposal',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'rare-earth-mining',
+      workflowId: 'demo-workflow',
+      nodeId: 'rare-earth-mining',
+      label: '稀土开采',
+      lifecycleStage: 'disposal',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '16.8',
+      activitydataSource: 'measured',
+      carbonFootprint: '16.8',
+      verificationStatus: 'verified',
+      nodeType: 'disposal',
+      quantity: '15',
+      activityUnit: 'g',
+    } as NodeData,
+  },
+  {
+    id: 'lithium-mining',
+    type: 'disposal',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'lithium-mining',
+      workflowId: 'demo-workflow',
+      nodeId: 'lithium-mining',
+      label: '锂矿开采',
+      lifecycleStage: 'disposal',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '12.7',
+      activitydataSource: 'measured',
+      carbonFootprint: '12.7',
+      verificationStatus: 'verified',
+      nodeType: 'disposal',
+      quantity: '8',
+      activityUnit: 'g',
+    } as NodeData,
+  },
+  {
+    id: 'coal-power',
+    type: 'disposal',
+    position: { x: 0, y: 0 },
+    data: {
+      id: 'coal-power',
+      workflowId: 'demo-workflow',
+      nodeId: 'coal-power',
+      label: '煤电',
+      lifecycleStage: 'disposal',
+      emissionType: 'direct',
+      activityScore: 0,
+      carbonFactor: '22.3',
+      activitydataSource: 'measured',
+      carbonFootprint: '22.3',
+      verificationStatus: 'verified',
+      nodeType: 'disposal',
+      quantity: '45',
+      activityUnit: 'kWh',
+    } as NodeData,
+  },
+];
+
+/**
+ * 桑基图演示边数据
+ */
+export const sankeyDemoEdges: Edge[] = [
+  // 从排放源到制造层
+  { id: 'silicon-chip', source: 'silicon-mining', target: 'chip-manufacturing' },
+  { id: 'rare-earth-chip', source: 'rare-earth-mining', target: 'chip-manufacturing' },
+  { id: 'rare-earth-screen', source: 'rare-earth-mining', target: 'screen-manufacturing' },
+  { id: 'lithium-battery', source: 'lithium-mining', target: 'battery-manufacturing' },
+  { id: 'coal-electricity', source: 'coal-power', target: 'electricity-usage' },
+
+  // 从制造层到产品层
+  { id: 'chip-assembly', source: 'chip-manufacturing', target: 'smartphone-assembly' },
+  { id: 'screen-assembly', source: 'screen-manufacturing', target: 'smartphone-assembly' },
+  { id: 'battery-assembly', source: 'battery-manufacturing', target: 'smartphone-assembly' },
+
+  // 从分销层到产品层
+  { id: 'packaging-assembly', source: 'packaging', target: 'smartphone-assembly' },
+  { id: 'transport-assembly', source: 'transportation', target: 'smartphone-assembly' },
+
+  // 从使用层到产品层
+  { id: 'usage-assembly', source: 'electricity-usage', target: 'smartphone-assembly' },
+
+  // 从产品层到最终产品
+  { id: 'assembly-final', source: 'smartphone-assembly', target: 'final-product' },
+];

@@ -1,0 +1,87 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 系统架构总览 (System Architecture)
+
+本文档旨在提供 ClimateSeal 项目的统一、精确的系统架构视图，取代了旧的、分离的`frontend`和`backend`描述。本项目的本质是一个**多服务、多后端的分布式系统**。
+
+---
+
+### **1. 架构总览图**
+
+```mermaid
+graph TD
+    subgraph "用户设备"
+        A[Browser: Remix UI + CarbonFlow Canvas]
+    end
+
+    subgraph "AI & 控制平面"
+        B(AI 大语言模型);
+        C[AI 指令桥<br/>carbonflow-bridge.ts];
+        D[Remix 后端<br/>(Loaders/Actions)];
+    end
+
+    subgraph "后端服务 (Backend Services)"
+        E[Supabase<br/>(Postgres DB, Auth)];
+        F[Python LCA 计算服务<br/>(Brightway2, Dockerized)];
+        G[Cloudflare Workers<br/>(Edge Functions, Optional)];
+    end
+
+    A -- "1. 用户操作/聊天" --> D;
+    D -- "2. 生成AI Prompt" --> B;
+    B -- "3. 返回AI指令 (CarbonFlow Action)" --> C;
+    C -- "4. 广播UI事件" --> A;
+
+    A -- "5. 直接DB/Auth请求" --> E;
+    A -- "6. LCA计算请求 (HTTP/RPC)" --> F;
+    A -- "7. 调用边缘函数" --> G;
+    
+    D -- "8. 读写数据库" --> E
+```
+
+---
+
+### **2. 核心组件与职责**
+
+1.  **Remix UI (浏览器)**:
+    -   **职责**: 核心用户界面，包括所有React组件、`CarbonFlow`画布的渲染和前端状态管理。
+    -   **交互**:
+        -   通过Supabase的JS客户端，**直接**与Supabase进行数据库读写和用户认证。
+        -   通过HTTP或其他RPC方式，**直接**向Python LCA计算服务发起计算请求。
+        -   监听由"AI指令桥"广播的UI事件，执行具体的画布操作。
+
+2.  **Remix 后端 (Node.js)**:
+    -   **职责**: 处理页面加载（`loaders`）和表单提交（`actions`），作为与AI大模型交互的**安全后端**。
+    -   **交互**:
+        -   接收来自UI的聊天信息或操作请求。
+        -   构建发往AI大模型的Prompt。
+        -   接收AI的响应，并将其传递回前端。
+        -   可能会直接读写Supabase数据库以获取构建Prompt所需的数据。
+
+3.  **AI 指令桥 (`carbonflow-bridge.ts`)**:
+    -   **职责**: 前端内部的一个事件驱动模块，作为**AI意图和UI执行之间的解耦层**。
+    -   **工作模式**: 它拦截从Remix后端传来的AI指令（`CarbonFlow Action`），并将其转化为浏览器内部的自定义事件。`CarbonFlow`画布内的组件会监听这些事件并执行相应操作（如创建节点、布局等），从而实现AI对复杂UI的控制。
+
+4.  **Supabase (BaaS)**:
+    -   **职责**: 项目的**主数据中心**。提供PostgreSQL数据库、用户身份验证、对象存储等服务。
+    -   **交互**: 主要由Remix UI通过其JS客户端直接访问，也可能被Remix后端访问。
+
+5.  **Python LCA 计算服务 (独立进程)**:
+    -   **职责**: 执行**计算密集型**的生命周期评估（LCA）任务。它使用`Brightway2`库，并很可能被封装在一个Docker容器中。
+    -   **交互**: 接收来自Remix UI的计算请求（包含流程图数据），执行长时间的计算，并返回结果。
+
+6.  **Cloudflare Workers (Edge)**:
+    -   **职责**: (基于`wrangler.toml`推断) 用于部署轻量级的边缘计算任务，例如API代理、访问控制或快速数据查询，但不是系统的核心计算部分。
+
+---
+
+### **3. 关键数据流**
+
+-   **AI控制UI流程**:
+    `用户输入 -> Remix后端 -> AI大模型 -> AI指令(Action) -> Remix后端 -> 前端指令桥 -> UI事件 -> 画布更新`
+
+-   **LCA计算流程**:
+    `用户在UI点击"计算" -> Remix UI打包流程图数据 -> 发送HTTP/RPC请求到Python服务 -> Python服务执行计算 -> 返回结果到UI -> UI展示结果`
+

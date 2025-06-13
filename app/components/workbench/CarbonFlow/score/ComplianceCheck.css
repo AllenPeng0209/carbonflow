@@ -1,0 +1,140 @@
+.compliance-check-module {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.compliance-check-module.expanded {
+  background: #ffffff;
+}
+
+.compliance-check-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid #e8e8e8;
+  user-select: none;
+}
+
+.compliance-check-header:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.compliance-check-content {
+  padding: 20px;
+}
+
+.compliance-config-section {
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.score-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.score-value {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.standard-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.standard-summary {
+  background: #fafafa;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.node-issues {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 12px;
+}
+
+.node-item {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 8px 12px;
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.node-item:hover {
+  background: #f0f0f0;
+  border-color: #d0d0d0;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.node-issues-list {
+  margin-top: 8px;
+}
+
+.compliance-check-module .ant-collapse-header {
+  padding: 12px 16px !important;
+}
+
+.compliance-check-module .ant-collapse-content {
+  border-top: 1px solid #e8e8e8;
+}
+
+.compliance-check-module .ant-progress-line {
+  margin: 8px 0;
+}
+
+.compliance-check-module .ant-statistic-title {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.compliance-check-module .ant-statistic-content {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.compliance-check-module .ant-card {
+  border: 1px solid #e8e8e8;
+}
+
+.compliance-check-module .ant-card-body {
+  padding: 12px;
+}
+
+.compliance-check-module .ant-tag {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .compliance-check-content {
+    padding: 12px;
+  }
+  
+  .standard-summary .ant-col {
+    margin-bottom: 8px;
+  }
+  
+  .node-item {
+    padding: 6px 8px;
+  }
+} 

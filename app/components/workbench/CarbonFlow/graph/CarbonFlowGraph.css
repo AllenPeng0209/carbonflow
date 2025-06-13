@@ -1,0 +1,173 @@
+/* 碳足迹图形可视化样式 */
+.carbon-flow-graph {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* 节点样式增强 */
+.carbon-flow-graph .react-flow__node {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.carbon-flow-graph .react-flow__node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* 高碳足迹节点特殊效果 */
+.carbon-flow-graph .react-flow__node[data-carbon-level="high"] {
+  animation: pulse-red 2s infinite;
+}
+
+.carbon-flow-graph .react-flow__node[data-carbon-level="medium"] {
+  animation: pulse-orange 3s infinite;
+}
+
+.carbon-flow-graph .react-flow__node[data-carbon-level="low"] {
+  border: 2px solid #10b981;
+}
+
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6);
+  }
+}
+
+@keyframes pulse-orange {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5);
+  }
+}
+
+/* 边样式增强 */
+.carbon-flow-graph .react-flow__edge-path {
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.carbon-flow-graph .react-flow__edge.react-flow__edge-animated .react-flow__edge-path {
+  stroke-dasharray: 8 4;
+  animation: dash 1s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+/* 边标签样式 */
+.carbon-flow-graph .react-flow__edge-text {
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* 控制面板样式 */
+.carbon-flow-graph .react-flow__controls {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.carbon-flow-graph .react-flow__controls-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.carbon-flow-graph .react-flow__controls-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 小地图样式 */
+.carbon-flow-graph .react-flow__minimap {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 背景网格增强 */
+.carbon-flow-graph .react-flow__background {
+  opacity: 0.6;
+}
+
+/* 选中状态 */
+.carbon-flow-graph .react-flow__node.selected {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.carbon-flow-graph .react-flow__edge.selected .react-flow__edge-path {
+  stroke: #3b82f6;
+  stroke-width: 3px;
+}
+
+/* 碳足迹图例样式 */
+.carbon-footprint-legend {
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.carbon-footprint-legend .legend-item {
+  transition: opacity 0.2s ease;
+}
+
+.carbon-footprint-legend .legend-item:hover {
+  opacity: 0.8;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .carbon-footprint-legend {
+    font-size: 10px;
+    padding: 12px;
+  }
+  
+  .carbon-flow-graph .react-flow__controls {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .carbon-flow-graph .react-flow__minimap {
+    width: 120px;
+    height: 80px;
+  }
+}
+
+/* 加载动画 */
+.carbon-flow-graph.loading {
+  position: relative;
+}
+
+.carbon-flow-graph.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 15, 15, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.carbon-flow-graph.loading::after {
+  content: '正在生成碳足迹可视化...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  z-index: 1001;
+} 
